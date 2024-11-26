@@ -1,0 +1,5 @@
+[meta]
+id = "ml-inference-candle"
+
+[log]
+level = "DEBUG"
