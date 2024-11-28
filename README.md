@@ -15,3 +15,8 @@ Rust Machine Learning Inference with HF Candle framework
 - Dev and Test for each module/func in parallel
 - Async and sync combination
 - Binary / CLI service as output
+
+## Installations
+
+`cargo install cargo-llvm-cov` - To install coverage tool
+`cargo uninstall cargo-llvm-cov` - To uninstall coverage tool
