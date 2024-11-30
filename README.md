@@ -4,8 +4,8 @@ Rust Machine Learning Inference with HF Candle framework
 ## TODO
 
 - [x] A consumer listening to Message queue (public test) on a particular subject/topic for "query" text message
-- [] Testing for consumer and factory to be added
-- [] Message is processed for embedding computation ONNX ML model and chat generation through Small LLM model
+[] Testing for consumer and factory to be added
+[] Message is processed for embedding computation ONNX ML model and chat generation through Small LLM model
 - [] Testing for embedding model and slm to be added
 - [] Write outbound for object storage interfaces.
 - [] Both the results are combined along with original query text message into a result.json file. This result.json file is prepended with an 8 character random hash number and date for identification in the file name as : YYYYMMDD-<8 chars hash>-result.json. The resulting file is then stored in a Minio bucket (public test)
