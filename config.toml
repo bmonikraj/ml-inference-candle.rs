@@ -3,3 +3,13 @@ id = "ml-inference-candle"
 
 [log]
 level = "DEBUG"
+
+[consumer]
+type = "nats"
+url = "nats://demo.nats.io:4222"
+subject = "bmonikraj.ml-inference-candle.rs"
+
+[llm]
+type = "smol"
+llm_model_path = ""
+embedding_model_path = ""
