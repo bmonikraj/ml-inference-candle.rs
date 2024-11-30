@@ -32,7 +32,7 @@ pub async fn main_worker(
                 // do something with payload
                 log::info!("nats message received = {:#?}", message_);
                 log::info!("payload data : RequestMessage.query = {}", m.query);
-                llm.generate();
+                llm.generate_and_persist();
             },
             Err(e) => {
                 log::info!("nats message received = {:#?}", message_);

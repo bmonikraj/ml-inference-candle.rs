@@ -9,7 +9,11 @@ impl Llm for LLMSmol {
         log::info!("LLMSmol invoked for loading")
     }
 
-    fn generate(&mut self) {
+    fn set_writer(&mut self) {
+        log::info!("LLMSmol invoked for setting writer")
+    }
+
+    fn generate_and_persist(&mut self) {
         log::info!("LLMSmol invoked for generation")
     }
 }

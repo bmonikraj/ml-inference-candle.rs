@@ -9,7 +9,11 @@ impl Llm for LLMQwen {
         log::info!("LLMQwen invoked for loading")
     }
 
-    fn generate(&mut self) {
+    fn set_writer(&mut self) {
+        log::info!("LLMQwen invoked for setting writer")
+    }
+
+    fn generate_and_persist(&mut self) {
         log::info!("LLMQwen invoked for generation")
     }
 }

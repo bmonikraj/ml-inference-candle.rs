@@ -13,3 +13,7 @@ subject = "bmonikraj.ml-inference-candle.rs"
 type = "smol"
 llm_model_path = ""
 embedding_model_path = ""
+persist = "true"
+
+[writer]
+type = "minio"
