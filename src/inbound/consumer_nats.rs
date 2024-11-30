@@ -18,3 +18,19 @@ impl ConsumerNats {
         return Self {};
     }
 }
+
+#[cfg(test)]
+mod test_consumer_nats {
+    use crate::service::llm_smol::LLMSmol;
+
+    use super::*;
+
+    #[test]
+    #[should_panic]
+    fn test_start() {
+        let mut c = ConsumerNats::new();
+        let config: HashMap<String, HashMap<String, String>> = HashMap::new();
+        let mut llm: Box<dyn Llm> = Box::new(LLMSmol::new());
+        c.start(&config, &mut llm);
+    }
+}

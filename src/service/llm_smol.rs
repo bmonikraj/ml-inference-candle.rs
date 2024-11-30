@@ -1,11 +1,12 @@
 use super::llm::Llm;
 
-pub struct LLMSmol {
-
-}
+pub struct LLMSmol {}
 
 impl Llm for LLMSmol {
-    fn load(&mut self, config: &std::collections::HashMap<String, std::collections::HashMap<String, String>>) {
+    fn load(
+        &mut self,
+        config: &std::collections::HashMap<String, std::collections::HashMap<String, String>>,
+    ) {
         log::info!("LLMSmol invoked for loading")
     }
 

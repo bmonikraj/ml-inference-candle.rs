@@ -33,13 +33,42 @@ pub async fn main_worker(
                 log::info!("nats message received = {:#?}", message_);
                 log::info!("payload data : RequestMessage.query = {}", m.query);
                 llm.generate_and_persist();
-            },
+            }
             Err(e) => {
                 log::info!("nats message received = {:#?}", message_);
-                log::error!("error in nats message json deserialization: {}", e.to_string());
+                log::error!(
+                    "error in nats message json deserialization: {}",
+                    e.to_string()
+                );
             }
         };
     }
 
     Ok(())
+}
+
+#[cfg(test)]
+mod test_worker_nats {
+    use crate::service::llm_smol::LLMSmol;
+
+    use super::*;
+
+    #[test]
+    #[should_panic]
+    fn test_no_url() {
+        let config: HashMap<String, HashMap<String, String>> = HashMap::new();
+        let mut llm: Box<dyn Llm> = Box::new(LLMSmol::new());
+        let _ = main_worker(&config, &mut llm);
+    }
+
+    #[test]
+    #[should_panic]
+    fn test_no_subject() {
+        let mut config: HashMap<String, HashMap<String, String>> = HashMap::new();
+        let mut consumer_config = HashMap::new();
+        consumer_config.insert("url".to_owned(), "nats:://demo.nats.io:4222".to_owned());
+        config.insert("consumer".to_owned(), consumer_config);
+        let mut llm: Box<dyn Llm> = Box::new(LLMSmol::new());
+        let _ = main_worker(&config, &mut llm);
+    }
 }

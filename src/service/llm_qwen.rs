@@ -1,11 +1,12 @@
 use super::llm::Llm;
 
-pub struct LLMQwen {
-
-}
+pub struct LLMQwen {}
 
 impl Llm for LLMQwen {
-    fn load(&mut self, config: &std::collections::HashMap<String, std::collections::HashMap<String, String>>) {
+    fn load(
+        &mut self,
+        config: &std::collections::HashMap<String, std::collections::HashMap<String, String>>,
+    ) {
         log::info!("LLMQwen invoked for loading")
     }
 
