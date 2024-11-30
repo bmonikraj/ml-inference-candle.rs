@@ -21,12 +21,17 @@ Rust Machine Learning Inference with HF Candle framework
 ## Installations
 
 `cargo install cargo-llvm-cov` - To install coverage tool
+
 `cargo uninstall cargo-llvm-cov` - To uninstall coverage tool
 
 ## NATS Telnet communication
 
 `telnet demo.nats.io 4222`
+
 `CONNECT {}`
+
 `PING`
+
 `PUB bmonikraj.ml-inference-candle.rs 49`
+
 `{"query": "How are you doing this fine evening?"}`
