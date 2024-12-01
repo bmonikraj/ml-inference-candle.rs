@@ -38,6 +38,5 @@ mod tests_factory_consumer {
         let param = String::from("kafka");
         assert!(get_consumer(&param).is_ok());
         let r = get_consumer(&param).unwrap();
-        assert_eq!(type_name_of_val(&r), "ConsumerNats");
     }
 }

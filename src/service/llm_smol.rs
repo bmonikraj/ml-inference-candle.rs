@@ -1,3 +1,7 @@
+use std::error::Error;
+
+use crate::{model::request_message::RequestMessage, outbound::writer::Writer};
+
 use super::llm::Llm;
 
 pub struct LLMSmol {}
@@ -10,12 +14,13 @@ impl Llm for LLMSmol {
         log::info!("LLMSmol invoked for loading")
     }
 
-    fn set_writer(&mut self) {
-        log::info!("LLMSmol invoked for setting writer")
-    }
-
-    fn generate_and_persist(&mut self) {
-        log::info!("LLMSmol invoked for generation")
+    fn generate_and_persist(&mut self, request: &RequestMessage, writer: &mut Box<dyn Writer>) -> Result<bool, Box<dyn Error>> {
+        log::info!("LLMSmol invoked for generation");
+        if 1==1 {
+            return Ok(true);
+        } else {
+            return Err("e".into());
+        }
     }
 }
 

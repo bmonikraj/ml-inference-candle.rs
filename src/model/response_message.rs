@@ -2,11 +2,12 @@ use serde::Serialize;
 
 #[derive(Serialize, Debug, PartialEq)]
 pub struct ResponseMessage {
-    id: String,
-    created_at: String,
-    query: String,
-    answer: String,
-    embedding: Vec<f64>,
+    pub id: String,
+    pub name: String,
+    pub created_at: String,
+    pub query: String,
+    pub answer: String,
+    pub embedding: Vec<f64>,
 }
 
 #[cfg(test)]
@@ -17,6 +18,7 @@ mod test_response_message {
     fn test_message() {
         let a = ResponseMessage {
             id: "a".to_string(),
+            name: "x".to_string(),
             created_at: "b".to_string(),
             query: "c".to_string(),
             answer: "d".to_string(),
@@ -25,6 +27,7 @@ mod test_response_message {
 
         let b = ResponseMessage {
             id: "a".to_string(),
+            name: "x".to_string(),
             created_at: "b".to_string(),
             query: "c".to_string(),
             answer: "d".to_string(),

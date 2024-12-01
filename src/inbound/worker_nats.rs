@@ -2,12 +2,13 @@ use std::collections::HashMap;
 
 use futures::StreamExt;
 
-use crate::{model::request_message::RequestMessage, service::llm::Llm};
+use crate::{model::request_message::RequestMessage, outbound::writer::Writer, service::llm::Llm};
 
 #[tokio::main]
 pub async fn main_worker(
     config: &HashMap<String, HashMap<String, String>>,
     llm: &mut Box<dyn Llm>,
+    writer: &mut Box<dyn Writer>
 ) -> Result<(), async_nats::Error> {
     let nats_url = config["consumer"]["url"].to_string();
 
@@ -28,11 +29,20 @@ pub async fn main_worker(
 
     while let Some(message_) = subscriber.next().await {
         match serde_json::from_slice::<RequestMessage>(message_.payload.as_ref()) {
-            Ok(m) => {
+            Ok(llm_request) => {
                 // do something with payload
                 log::info!("nats message received = {:#?}", message_);
-                log::info!("payload data : RequestMessage.query = {}", m.query);
-                llm.generate_and_persist();
+                log::info!("payload data : RequestMessage.query = {}", llm_request.query);
+                let _ = match llm.generate_and_persist(&llm_request, writer) {
+                    Ok(r) => {
+                        log::info!("llm generation and persistance is completed = {}", r);
+                    },
+                    Err(e) => {
+                        log::error!("error in llm generation and persistance: {}", e);
+                        continue;
+                    },
+                };
+                
             }
             Err(e) => {
                 log::info!("nats message received = {:#?}", message_);
@@ -49,7 +59,7 @@ pub async fn main_worker(
 
 #[cfg(test)]
 mod test_worker_nats {
-    use crate::service::llm_smol::LLMSmol;
+    use crate::{outbound::writer_echo::WriterEcho, service::llm_smol::LLMSmol};
 
     use super::*;
 
@@ -58,7 +68,8 @@ mod test_worker_nats {
     fn test_no_url() {
         let config: HashMap<String, HashMap<String, String>> = HashMap::new();
         let mut llm: Box<dyn Llm> = Box::new(LLMSmol::new());
-        let _ = main_worker(&config, &mut llm);
+        let mut writer: Box<dyn Writer> = Box::new(WriterEcho::new());
+        let _ = main_worker(&config, &mut llm, &mut writer);
     }
 
     #[test]
@@ -69,6 +80,7 @@ mod test_worker_nats {
         consumer_config.insert("url".to_owned(), "nats:://demo.nats.io:4222".to_owned());
         config.insert("consumer".to_owned(), consumer_config);
         let mut llm: Box<dyn Llm> = Box::new(LLMSmol::new());
-        let _ = main_worker(&config, &mut llm);
+        let mut writer: Box<dyn Writer> = Box::new(WriterEcho::new());
+        let _ = main_worker(&config, &mut llm, &mut writer);
     }
 }

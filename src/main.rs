@@ -2,6 +2,7 @@ use std::{collections::HashMap, env, str::FromStr};
 
 use config::Config;
 use inbound::factory_consumer::get_consumer;
+use outbound::factory_writer::get_writer;
 use service::factory_llm::get_llm;
 
 mod inbound;
@@ -38,6 +39,13 @@ fn main() {
         .format_target(false)
         .init();
 
+    // create writer object
+    let mut writer_worker = match get_writer(&config["writer"]["type"]) {
+        Ok(w) => w,
+        Err(e) => panic!("writer error: {}", e),
+    };
+    writer_worker.init(&config);
+
     // create llm object
     let mut llm_worker = match get_llm(&config["llm"]["type"]) {
         Ok(l) => l,
@@ -53,7 +61,7 @@ fn main() {
 
     // starting the application
     log::info!("application [{}] starting...", config["meta"]["id"]);
-    consumer_worker.start(&config, &mut llm_worker);
+    consumer_worker.start(&config, &mut llm_worker, &mut writer_worker);
 }
 
 #[cfg(test)]
