@@ -12,11 +12,11 @@ mod test_request_message {
     #[test]
     fn test_message() {
         let a = RequestMessage {
-            query: "a".to_string()
+            query: "a".to_string(),
         };
 
         let b = RequestMessage {
-            query: "a".to_string()
+            query: "a".to_string(),
         };
 
         assert_eq!(a, b);

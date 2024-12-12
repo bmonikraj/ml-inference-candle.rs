@@ -11,9 +11,7 @@ subject = "bmonikraj.ml-inference-candle.rs"
 
 [llm]
 type = "qwen"
-llm_model_path = ""
-embedding_model_path = ""
-persist = "true"
+endpoint = "https://g-8odp89w3vvv0kr3wwlm5pny6kmxdol.srv.pstmn.io"
 
 [writer]
 type = "echo"

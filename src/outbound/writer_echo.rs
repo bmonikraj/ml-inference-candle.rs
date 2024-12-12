@@ -7,11 +7,17 @@ pub struct WriterEcho {
 }
 
 impl Writer for WriterEcho {
-    fn init(&mut self, config: &std::collections::HashMap<String, std::collections::HashMap<String, String>>) {
+    fn init(
+        &mut self,
+        config: &std::collections::HashMap<String, std::collections::HashMap<String, String>>,
+    ) {
         self.config = Some(config.clone());
     }
 
-    fn persist(&mut self, payload: &crate::model::response_message::ResponseMessage) -> Result<bool, Box<dyn std::error::Error>> {
+    fn persist(
+        &mut self,
+        payload: &crate::model::response_message::ResponseMessage,
+    ) -> Result<bool, Box<dyn std::error::Error>> {
         let binding_endpoint = self.config.clone().unwrap();
         let endpoint = binding_endpoint["writer"]["endpoint"].as_str();
         let binding_path = self.config.clone().unwrap();
@@ -21,25 +27,29 @@ impl Writer for WriterEcho {
         let client = reqwest::Client::new();
         let string_payload = serde_json::to_string(&payload).unwrap();
         let response_from_http = futures::executor::block_on(async {
-            client.post(url).body(string_payload).send().await?.text().await
+            client
+                .post(url)
+                .body(string_payload)
+                .send()
+                .await?
+                .text()
+                .await
         });
         match response_from_http {
             Ok(r) => {
                 log::info!("echo response: \n{}", r);
                 return Ok(true);
-            },
+            }
             Err(e) => {
                 return Err(format!("echo sending error: {}", e).into());
-            },
+            }
         }
     }
 }
 
 impl WriterEcho {
     pub fn new() -> Self {
-        return Self {
-            config: None,
-        };
+        return Self { config: None };
     }
 }
 

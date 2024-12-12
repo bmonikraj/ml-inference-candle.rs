@@ -8,7 +8,7 @@ Rust Machine Learning Inference with HF Candle framework
 - [ ] Message is processed for embedding computation ONNX ML model and chat generation through Small LLM model
 - [ ] Testing for embedding model and slm to be added
 - [x] Write outbound for fs and echo http interfaces.
-- [ ] Both the results are combined along with original query text message into a result.json file. This result.json file is prepended with an 8 character random hash number and date for identification in the file name as : YYYYMMDD-<8 chars hash>-result.json. The resulting file is then stored in a Minio bucket (public test)
+- [ ] Both the results are combined along with original query text message into a result.json file. This result.json file is prepended with an 8 character random hash number and date for identification in the file name as : YYYYMMDD-<8 chars hash>-result.json. The resulting data is then stored in a HTTP endpoint or in a local file system
 - [x] Testing for outbound fs and echo http file activities to be added
 
 ## Development plan
@@ -36,6 +36,14 @@ Rust Machine Learning Inference with HF Candle framework
 
 `{"query": "How are you doing this fine evening?"}`
 
-## Minio play server
+## Triton gRPC Protobuf
 
-[Reference](https://min.io/docs/minio/linux/administration/minio-console.html#:~:text=Try%20out%20the%20Console%20using%20MinIO%E2%80%99s%20Play%20testing%20environment)
+**Protobuf files and definition present below**
+
+[Reference](https://github.com/triton-inference-server/common/tree/main/protobuf)
+
+The above files will be stored in [proto](./proto/) directory
+
+### Possible features for tonic dependency (gRPC)
+
+`["tls", "tls-native-roots", "transport", "tls-roots", "tls-webpki-roots"]`

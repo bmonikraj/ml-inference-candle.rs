@@ -1,8 +1,10 @@
+use std::io::Write;
 use std::{collections::HashMap, env, str::FromStr};
 
+use chrono::Utc;
 use config::Config;
 use inbound::factory_consumer::get_consumer;
-use outbound::factory_writer::get_writer;
+use outbound::{client_grpc, factory_writer::get_writer};
 use service::factory_llm::get_llm;
 
 mod inbound;
@@ -37,6 +39,18 @@ fn main() {
     env_logger::builder()
         .filter_level(log_level)
         .format_target(false)
+        .format_timestamp_secs()
+        .format(|buf, record| {
+            writeln!(
+                buf,
+                "{} {} [{}:{}] {}",
+                Utc::now().format("%Y-%m-%d %H:%M:%S"),
+                record.level(),
+                record.module_path().unwrap(),
+                record.line().unwrap(),
+                record.args()
+            )
+        })
         .init();
 
     // create writer object
@@ -51,7 +65,6 @@ fn main() {
         Ok(l) => l,
         Err(e) => panic!("llm error: {}", e),
     };
-    llm_worker.load(&config);
 
     // create consumer object
     let mut consumer_worker = match get_consumer(&config["consumer"]["type"]) {
@@ -60,7 +73,7 @@ fn main() {
     };
 
     // starting the application
-    log::info!("application [{}] starting...", config["meta"]["id"]);
+    log::info!("application <<{}>> starting...", config["meta"]["id"]);
     consumer_worker.start(&config, &mut llm_worker, &mut writer_worker);
 }
 

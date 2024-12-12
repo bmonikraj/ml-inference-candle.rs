@@ -37,6 +37,9 @@ mod tests_factory_writer {
         let param = String::from("echo");
         assert!(get_writer(&param).is_ok());
         let r = get_writer(&param).unwrap();
-        assert_eq!(type_name_of_val(&r), "alloc::boxed::Box<dyn ml_inference_candle::outbound::writer::Writer>");
+        assert_eq!(
+            type_name_of_val(&r),
+            "alloc::boxed::Box<dyn ml_inference_candle::outbound::writer::Writer>"
+        );
     }
 }

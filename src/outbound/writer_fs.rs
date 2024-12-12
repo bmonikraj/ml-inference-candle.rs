@@ -9,7 +9,10 @@ pub struct WriterFs {
 }
 
 impl Writer for WriterFs {
-    fn init(&mut self, config: &std::collections::HashMap<String, std::collections::HashMap<String, String>>) {
+    fn init(
+        &mut self,
+        config: &std::collections::HashMap<String, std::collections::HashMap<String, String>>,
+    ) {
         self.config = Some(config.clone());
     }
 
@@ -18,28 +21,30 @@ impl Writer for WriterFs {
         let endpoint = binding_endpoint["writer"]["endpoint"].as_str();
         let binding_path = self.config.clone().unwrap();
         let base_path = binding_path["writer"]["base_path"].as_str();
-        
-        log::info!("opening file = {}", format!("{}/{}/{}.json", endpoint, base_path, payload.name));
-        let mut file_handler = File::create(format!("{}/{}/{}.json", endpoint, base_path, payload.name)).unwrap();
+
+        log::info!(
+            "opening file = {}",
+            format!("{}/{}/{}.json", endpoint, base_path, payload.name)
+        );
+        let mut file_handler =
+            File::create(format!("{}/{}/{}.json", endpoint, base_path, payload.name)).unwrap();
 
         let string_payload = serde_json::to_string_pretty(&payload).unwrap();
         match file_handler.write(string_payload.as_bytes()) {
             Ok(_) => {
                 log::info!("data written to the file = {}", payload.name);
                 return Ok(true);
-            },
+            }
             Err(e) => {
                 return Err(format!("file writing error: {}", e).into());
-            },
+            }
         }
     }
 }
 
 impl WriterFs {
     pub fn new() -> Self {
-        return Self {
-            config: None,
-        };
+        return Self { config: None };
     }
 }
 
