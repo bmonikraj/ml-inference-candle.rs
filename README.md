@@ -1,5 +1,5 @@
 # ml-inference-candle.rs
-Rust Machine Learning Inference with HF Candle framework
+Rust Machine Learning Inference with hosted Triton Server (Python based ML models gRPC hosting preferred Candle based model re-write)
 
 ## TODO
 
